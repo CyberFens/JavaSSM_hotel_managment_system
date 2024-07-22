@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxx.dao.HotelDao">
+    <!-- <insert id="insert" parameterType="Hotel">
+         INSERT INTO hotel(hotelname, price, introduction) VALUES (#{hotelname}, #{price}, #{introduction})
+     </insert>
+     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="Hotel">
+         SELECT hotelid, hotelname, price, introduction FROM hotel_info WHERE hotelid = #{hotelid}
+     </select>
+     <select id="selectAll" resultType="Hotel">
+         SELECT hotelid, hotelhotelname, price, introduction FROM hotel_info LIMIT #{offset}, #{limit}
+     </select>
+     <update id="updateByPrimaryKey" parameterType="Hotel">
+         UPDATE hotel_info SET hotelname = #{hotelname}, price = #{price}, introduction = #{introduction} WHERE hotelid = #{hotelid}
+     </update>-->
+
+
+    <!--查询所有酒店信息-->
+    <select id="findAllHotel" resultType="Hotel">
+        select * from hotel_info
+        <where>
+            <if test="hotelid!=null and hotelid!= ''">`hotelid` like concat('%', #{hotelid}, '%')</if>
+        </where>
+         LIMIT #{offset}, #{limit}
+    </select>
+
+    <!--添加酒店信息-->
+    <insert id="insertHotel" parameterType="Hotel">
+        insert into hotel_info(hotelname,price,introduction,image)
+        values (#{hotelname},#{price},#{introduction},#{image})
+    </insert>
+
+    <!--查询单个酒店信息-->
+    <select id="findOneHotel" resultType="Hotel" parameterType="int">
+        select * from hotel_info where hotelid = #{id}
+    </select>
+
+    <select id="getCount" resultType="Integer" >
+        select count(*) as qty from hotel_info
+        <where>
+            <if test="hotelid!=null and hotelid!= ''">`hotelid` like concat('%', #{hotelid}, '%')</if>
+        </where>
+    </select>
+
+    <!--修改酒店信息-->
+    <update id="updateHotel" parameterType="Hotel">
+        update hotel_info set
+            hotelname = #{hotelname},
+            price = #{price},
+            introduction = #{introduction},
+            image = #{image}
+            where hotelid = #{hotelid}
+    </update>
+
+    <!--删除酒店信息-->
+    <delete id="deleteHotel" parameterType="int">
+        delete from hotel_info where hotelid = #{hid}
+    </delete>
+
+</mapper>
+
